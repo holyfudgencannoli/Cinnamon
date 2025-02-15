@@ -1,4 +1,4 @@
-pip3 install tkinter
+pip3 install tkk.py
 import tkinter as tk
 from tkinter import ttk 
 
