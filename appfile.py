@@ -1,6 +1,6 @@
-pip3 install tkk.py
-import tkinter as tk
-from tkinter import ttk 
+
+import ttk
+from ttk import ttk 
 
 root = tk.Tk()
 
