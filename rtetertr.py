@@ -142,6 +142,35 @@ class RawMaterialPurchaseLog(Base):
     def get_id(self):
         return str(self.id)
 
+class RawMaterialInventoryLog(Base):
+    __tablename__= 'raw_material_inventory_logs'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    amount_on_hand = Column(Float)
+    amount_on_hand_unit = Column(String)
+    periodic_auto_replace  = Column(Float)
+    periodic_auto_replace_unit = Column(String)
+    created_at = Column(DateTime)
+    last_updated = Column(DateTime)
+
+    item_id = Column(Integer, ForeignKey('raw_materials.id'), nullable=False)
+    item = relationship('RawMaterial', back_populates='inventory_log')
+
+    inventory_update_logs = relationship('RawMaterialInventoryUpdateLog', back_populates='inventory_log')
+    
+    def to_dict(self):
+        return{
+           'id': self.id,
+           'amount_on_hand': self.amount_on_hand,
+           'amount_on_hand_unit': self.amount_on_hand_unit,
+           'periodic_auto_replace': self.periodic_auto_replace,
+           'periodic_auto_replace_unit': self.periodic_auto_replace_unit,
+           'created_at': self.created_at,
+           'last_updated': self.last_updated
+        }
+    
+    def get_id(self):
+        return str(self.id)
+
 class RawMaterialInventoryUpdateLog(Base):
     __tablename__= 'raw_material_inventory_update_logs'
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -155,6 +184,11 @@ class RawMaterialInventoryUpdateLog(Base):
     item_id = Column(Integer, ForeignKey('raw_materials.id'), nullable=False)
     item = relationship('RawMaterial', back_populates='inventory_log')
 
+    inventory_log_id = Column(Integer, ForeignKey ('raw_material_inventory_logs.id'), nullable=False)    
+    inventory_log = relationship('RawMaterialInventoryLog', back_populates='inventory_update_logs')
+    
+    
+    
     def to_dict(self):
         return{
            'id': self.id,
