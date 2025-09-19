@@ -114,8 +114,8 @@ class RawMaterialPurchaseLog(Base):
     notes = Column(String)
 
 
-    inventory_log_id = Column(Integer, ForeignKey('raw_material_inventory_update_logs.id'), nullable=False)
-    inventory_log = relationship('RawMaterialInventoryUpdateLog', back_populates='purchase_logs')
+    inventory_update_log_id = Column(Integer, ForeignKey('raw_material_inventory_update_logs.id'), nullable=False)
+    inventory_update_log = relationship('RawMaterialInventoryUpdateLog', back_populates='purchase_logs')
 
     item_id = Column(Integer, ForeignKey('raw_materials.id'), nullable=False)
     item = relationship('RawMaterial', back_populates='purchase_logs')
@@ -176,8 +176,6 @@ class RawMaterialInventoryUpdateLog(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     amount = Column(Float)
     amount_unit = Column(String)
-    periodic_auto_replace  = Column(Float)
-    periodic_auto_replace_unit = Column(String)
     created_at = Column(DateTime)
     last_updated = Column(DateTime)
 
@@ -267,7 +265,7 @@ class RawMaterialFieldRecipeLink(Base):
     last_updated = Column(DateTime)
 
     field_recipe_id = Column(Integer, ForeignKey("field_recipes.id"))
-    field_recipe = relationship("FieldRecipe", back_populates='raw_materialfield_recipe_links')
+    field_recipe = relationship("FieldRecipe", back_populates='raw_material_field_recipe_links')
 
     item_id = Column(Integer, ForeignKey("raw_materials.id"))
     item = relationship("RawMaterial", back_populates="field_recipe_item_links")
