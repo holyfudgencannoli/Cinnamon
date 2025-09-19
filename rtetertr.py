@@ -87,9 +87,7 @@ class Vendor(Base):
 
     raw_material_purchase_logs = relationship("RawMaterialPurchaseLog", back_populates='vendor')
 
-    item_vendor_links = relationship('RawMaterialVendorLink', back_populates='vendor')
-
-    specimen_vendor_links = relationship('SpecimenVendorLink', back_populates='vendor')
+    specimen_purchase_logs = relationship("SpecimenPurchaseLog", back_populates='vendor')
 
     receipts = relationship('Receipt', back_populates='vendor')
 
@@ -116,8 +114,8 @@ class RawMaterialPurchaseLog(Base):
     notes = Column(String)
 
 
-    inventory_log_id = Column(Integer, ForeignKey('raw_material_inventory_logs.id'), nullable=False)
-    inventory_log = relationship('RawMaterialInventoryLog', back_populates='purchase_logs')
+    inventory_log_id = Column(Integer, ForeignKey('raw_material_inventory_update_logs.id'), nullable=False)
+    inventory_log = relationship('RawMaterialInventoryUpdateLog', back_populates='purchase_logs')
 
     item_id = Column(Integer, ForeignKey('raw_materials.id'), nullable=False)
     item = relationship('RawMaterial', back_populates='purchase_logs')
@@ -144,11 +142,11 @@ class RawMaterialPurchaseLog(Base):
     def get_id(self):
         return str(self.id)
 
-class RawMaterialInventoryLog(Base):
-    __tablename__= 'raw_material_inventory_logs'
+class RawMaterialInventoryUpdateLog(Base):
+    __tablename__= 'raw_material_inventory_update_logs'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    amount_on_hand = Column(Float)
-    amount_on_hand_unit = Column(String)
+    amount = Column(Float)
+    amount_unit = Column(String)
     periodic_auto_replace  = Column(Float)
     periodic_auto_replace_unit = Column(String)
     created_at = Column(DateTime)
